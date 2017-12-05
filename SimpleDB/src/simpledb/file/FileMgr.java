@@ -1,4 +1,4 @@
-package file;
+package simpledb.file;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,10 +8,10 @@ import java.nio.channels.FileChannel;
 import java.util.HashMap;
 import java.util.Map;
 
-import static file.Page.BLOCK_SIZE;
+import static simpledb.file.Page.BLOCK_SIZE;
 
 /**
- * <p>Title:file.MyProject</p>
+ * <p>Title:simpledb.file.MyProject</p>
  * <p>
  * <p>Description: </p>
  * <p>
@@ -75,8 +75,8 @@ public class FileMgr {
 
 	/**
 	 * Appends the contents of a bytebuffer to the end
-	 * of the specified file.
-	 * @param filename the name of file
+	 * of the specified simpledb.file.
+	 * @param filename the name of simpledb.file
 	 * @param bb the bytebuffer
 	 * @return a reference to the newly-created block.
 	 */
@@ -88,9 +88,9 @@ public class FileMgr {
 	}
 
 	/**
-	 * Returns the number of blocks in the specified file.
-	 * @param filename the name of the file
-	 * @return the number of blocks in the file
+	 * Returns the number of blocks in the specified simpledb.file.
+	 * @param filename the name of the simpledb.file
+	 * @return the number of blocks in the simpledb.file
 	 */
 	public synchronized int size(String filename) {
 		try {
@@ -102,7 +102,7 @@ public class FileMgr {
 	}
 
 	/**
-	 * Returns a boolean indicating whether the file manager
+	 * Returns a boolean indicating whether the simpledb.file manager
 	 * had to create a new database directory.
 	 * @return true if the database is new
 	 */
@@ -110,12 +110,12 @@ public class FileMgr {
 		return isNew;
 	}
 	/**
-	 * Returns the file channel for the specified filename.
-	 * The file channel is stored in a map keyed on the filename.
-	 * If the file is not open, then it is opened and the file channel
+	 * Returns the simpledb.file channel for the specified filename.
+	 * The simpledb.file channel is stored in a map keyed on the filename.
+	 * If the simpledb.file is not open, then it is opened and the simpledb.file channel
 	 * is added to the map.
-	 * @param filename the file channel associated filename
-	 * @return the file channel associated with the open file.
+	 * @param filename the simpledb.file channel associated filename
+	 * @return the simpledb.file channel associated with the open simpledb.file.
 	 * @throws IOException
 	 */
 	private FileChannel getFile(String filename) throws IOException {

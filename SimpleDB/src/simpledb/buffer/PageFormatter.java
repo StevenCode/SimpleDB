@@ -1,7 +1,7 @@
-package buffer;
+package simpledb.buffer;
 
 
-import file.Page;
+import simpledb.file.Page;
 
 /**
  * An interface used to initialize a new block on disk.
@@ -14,7 +14,7 @@ public interface PageFormatter {
     * written to a new disk block.
     * This method is called only during the method
     * {@link Buffer#assignToNew}.
-    * @param p a buffer page
+    * @param p a simpledb.buffer page
     */
    public void format(Page p);
 }

@@ -1,7 +1,7 @@
-package parse;
+package simpledb.parse;
 
 /**
- *A runtime exception indicating that the submitted query
+ *A runtime exception indicating that the submitted simpledb.query
  * @author Steven
  * @version 1.0 CreateTime：2017/11/26 22:05
  */

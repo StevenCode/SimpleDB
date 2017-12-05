@@ -1,4 +1,4 @@
-package parse;
+package simpledb.parse;
 
 import java.io.IOException;
 import java.io.StreamTokenizer;
@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * <p>Title:parse.MyProject</p>
+ * <p>Title:simpledb.parse.MyProject</p>
  * @author Steven
  * @version 1.0 CreateTime：2017/11/26 21:49
  */

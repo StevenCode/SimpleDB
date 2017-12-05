@@ -1,10 +1,10 @@
-package server;
+package simpledb.server;
 
-import file.FileMgr;
-import log.LogMgr;
+import simpledb.file.FileMgr;
+import simpledb.log.LogMgr;
 
 /**
- * <p>Title:server.MyProject</p>
+ * <p>Title:simpledb.server.MyProject</p>
  * <p>
  * <p>Description: </p>
  * <p>
@@ -21,6 +21,6 @@ public class SimpleDB {
 	}
 
 	public static LogMgr logMgr() {
-		return new LogMgr();
+		return null;
 	}
 }

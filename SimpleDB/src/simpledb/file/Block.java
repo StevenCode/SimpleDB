@@ -1,7 +1,7 @@
-package file;
+package simpledb.file;
 
 /**
- * <p>Title:buffer.MyProject</p>
+ * <p>Title:simpledb.buffer.MyProject</p>
  * <p>
  * <p>Description: </p>
  * <p>
@@ -19,7 +19,7 @@ public class Block {
 	/**
 	 * Constructs a block reference
 	 * for the specified filename and block number.
-	 * @param filename the name of file
+	 * @param filename the name of simpledb.file
 	 * @param blknum the block number
 	 */
 	public Block(String filename, int blknum) {
@@ -28,7 +28,7 @@ public class Block {
 	}
 
 	/**
-	 * Returns the name of the file where the block lives.
+	 * Returns the name of the simpledb.file where the block lives.
 	 * @return the filename
 	 */
 	public String fileName() {
@@ -36,7 +36,7 @@ public class Block {
 	}
 
 	/**
-	 * Returns the location of block within the file.
+	 * Returns the location of block within the simpledb.file.
 	 * @return
 	 */
 	public int number() {
@@ -49,7 +49,7 @@ public class Block {
 	}
 
 	public String toString(){
-		return "[file " + filename + ", block " + blknum + "]";
+		return "[simpledb.file " + filename + ", block " + blknum + "]";
 	}
 
 	public int hashCode() {

@@ -1,6 +1,6 @@
-package file;
+package simpledb.file;
 
-import server.SimpleDB;
+import simpledb.server.SimpleDB;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
  * There are methods to get/set values into this array,
  * and to read/write the contents of this array to a disk block.
  *
- * <p>Title:file.MyProject</p>
+ * <p>Title:simpledb.file.MyProject</p>
  * <p>
  * <p>Description: </p>
  * <p>
@@ -67,7 +67,7 @@ public class Page {
 	}
 
 	/**
-	 * Writes the contents of the page to the specified file.
+	 * Writes the contents of the page to the specified simpledb.file.
 	 * @param blk a reference to a disk block
 	 */
 	public synchronized void write(Block blk) {
@@ -75,8 +75,8 @@ public class Page {
 	}
 
 	/**
-	 * Appends the contents of the page to the specified file.
-	 * @param filename the name of the file
+	 * Appends the contents of the page to the specified simpledb.file.
+	 * @param filename the name of the simpledb.file
 	 * @return the reference to the newly-created disk block
 	 */
 	public synchronized Block append(String filename) {
