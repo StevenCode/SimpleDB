@@ -1,5 +1,6 @@
 package simpledb.server;
 
+import simpledb.buffer.BufferMgr;
 import simpledb.file.FileMgr;
 import simpledb.log.LogMgr;
 
@@ -23,4 +24,6 @@ public class SimpleDB {
 	public static LogMgr logMgr() {
 		return null;
 	}
+
+	public static BufferMgr bufferMgr() { return null;}
 }
