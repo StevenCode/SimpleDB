@@ -2,6 +2,11 @@ package simpledb.myplanner;
 
 import simpledb.parse.*;
 import simpledb.planner.UpdatePlanner;
+import simpledb.query.Plan;
+import simpledb.query.TablePlan;
+import simpledb.query.UpdateScan;
+import simpledb.record.RID;
+import simpledb.server.SimpleDB;
 import simpledb.tx.Transaction;
 
 /**
@@ -19,6 +24,14 @@ import simpledb.tx.Transaction;
 public class MyUpdatePlanner implements UpdatePlanner{
 	@Override
 	public int executeInsert(InsertData data, Transaction tx) {
+		String tblname = data.tableName();
+		Plan plan = new TablePlan(tblname, tx);
+
+		UpdateScan upSc = (UpdateScan) plan.open();
+
+		upSc.insert();
+		RID rid = upSc.getRid();
+
 		return 0;
 	}
 
@@ -34,6 +47,7 @@ public class MyUpdatePlanner implements UpdatePlanner{
 
 	@Override
 	public int executeCreateTable(CreateTableData data, Transaction tx) {
+		SimpleDB.mdMgr().createTable(data.tableName(), data.newSchema(), tx);
 		return 0;
 	}
 

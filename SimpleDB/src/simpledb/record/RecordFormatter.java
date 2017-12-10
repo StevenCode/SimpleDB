@@ -56,4 +56,5 @@ public class RecordFormatter implements PageFormatter{
 			else
 				page.setString(pos + INT_SIZE + offset, "");
 		}
+	}
 }

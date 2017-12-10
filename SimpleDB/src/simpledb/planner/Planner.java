@@ -1,6 +1,7 @@
 package simpledb.planner;
 
 import simpledb.parse.CreateTableData;
+import simpledb.parse.InsertData;
 import simpledb.parse.Parser;
 import simpledb.tx.Transaction;
 
@@ -18,19 +19,21 @@ import simpledb.tx.Transaction;
  */
 public class Planner {
 	private QueryPlanner qplanner;
-	private UpdatePlanner uplaner;
+	private UpdatePlanner uplanner;
 
-	public Planner(QueryPlanner qplanner, UpdatePlanner uplaner) {
+	public Planner(QueryPlanner qplanner, UpdatePlanner uplanner) {
 		this.qplanner = qplanner;
-		this.uplaner = uplaner;
+		this.uplanner = uplanner;
 	}
 
 	public int executeUpdate(String cmd, Transaction tx) {
 		Parser parser = new Parser(cmd);
 		Object obj = parser.updateCmd();
 
+		if (obj instanceof InsertData)
+			return uplanner.executeInsert((InsertData)obj, tx);
 		if (obj instanceof CreateTableData)
-			return uplaner.executeCreateTable((CreateTableData) obj, tx);
+			return uplanner.executeCreateTable((CreateTableData) obj, tx);
 		else
 			return 0;
 	}

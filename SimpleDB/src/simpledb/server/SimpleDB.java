@@ -3,6 +3,7 @@ package simpledb.server;
 import simpledb.buffer.BufferMgr;
 import simpledb.file.FileMgr;
 import simpledb.log.LogMgr;
+import simpledb.metadate.MetadataMgr;
 
 /**
  * <p>Title:simpledb.server.MyProject</p>
@@ -17,6 +18,7 @@ import simpledb.log.LogMgr;
  * @version 1.0 CreateTime：2017/12/4 23:35
  */
 public class SimpleDB {
+	private static MetadataMgr mdm;
 	public static FileMgr fileMgr() {
 		return new FileMgr("");
 	}
@@ -26,4 +28,6 @@ public class SimpleDB {
 	}
 
 	public static BufferMgr bufferMgr() { return null;}
+
+	public static MetadataMgr mdMgr()     { return mdm; }
 }
