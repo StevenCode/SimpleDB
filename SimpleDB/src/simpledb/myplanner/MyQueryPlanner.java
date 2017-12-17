@@ -1,5 +1,6 @@
 package simpledb.myplanner;
 
+import simpledb.index.query.IndexJoinPlan;
 import simpledb.index.query.IndexSelectPlan;
 import simpledb.metadate.IndexInfo;
 import simpledb.multibuffer.MultiBufferProductPlan;
@@ -10,6 +11,9 @@ import simpledb.record.Schema;
 import simpledb.server.SimpleDB;
 import simpledb.tx.Transaction;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -24,11 +28,106 @@ import java.util.Map;
  * @author Steven
  * @version 1.0 CreateTime：2017/12/16 18:30
  */
-public class MyQueryPlanner implements QueryPlanner{
-	@Override
+public class MyQueryPlanner implements QueryPlanner {
 	public Plan createPlan(QueryData data, Transaction tx) {
-		return null;
+
+		Collection<MyPlanner> tps = new ArrayList<MyPlanner>();
+
+		for (String tableName : data.tables()) {
+			tps.add(new MyPlanner(tableName, data.pred(), tx));
+		}
+
+		Plan current = null;
+
+		// start with smallest select in tree
+		MyPlanner bestTablePlan = null;
+
+		Iterator<MyPlanner> it = tps.iterator();
+
+		while (it.hasNext()) {
+
+			MyPlanner tp = it.next();
+
+			Plan plan = tp.makeSelect();
+			if (current == null || plan.recordsOutput() < current.recordsOutput()) {
+				bestTablePlan = tp;
+				current = plan;
+			}
+		}
+
+		tps.remove(bestTablePlan);
+
+		while (!tps.isEmpty()) {
+
+
+			// apply smallest sort of joins
+			bestTablePlan = null;
+			Plan p = null;
+
+			it = tps.iterator();
+
+			while (it.hasNext()) {
+
+				MyPlanner tp = it.next();
+
+				Plan plan = tp.createJoin(current);
+
+				if (plan != null && (p == null || plan.recordsOutput() < p.recordsOutput())) {
+
+					bestTablePlan = tp;
+					p = plan;
+
+				}
+
+			}
+
+			if (p != null) {
+
+				tps.remove(bestTablePlan);
+
+				current = p;
+
+			} else {
+
+				// no join, apply products
+
+				bestTablePlan = null;
+				p = null;
+
+				it = tps.iterator();
+
+				while (it.hasNext()) {
+
+					MyPlanner tp = it.next();
+
+					Plan plan = tp.createProduct(current);
+					if (p == null || plan.recordsOutput() < p.recordsOutput()) {
+
+						bestTablePlan = tp;
+						p = plan;
+
+					}
+
+				}
+
+
+				if (p != null) {
+
+					tps.remove(bestTablePlan);
+
+					current = p;
+
+				}
+
+			}
+
+		}
+
+		return new ProjectPlan(current, data.fields());
+
 	}
+}
+
 
 	class MyPlanner{
 
@@ -82,6 +181,56 @@ public class MyQueryPlanner implements QueryPlanner{
 				return this._myPlan;
 		}
 
+		public Plan createJoin(Plan current) {
+
+			Schema currsch = current.schema();
+
+			Predicate joinPredicate = _myPredicate.joinPred(this._mySchema, currsch);
+			if (joinPredicate == null)
+				return null;
+
+			// index join
+			for (String fieldName : this._indexes.keySet()) {
+
+				String outerField = _myPredicate.equatesWithField(fieldName);
+
+				if (outerField != null && currsch.hasField(outerField)) {
+					IndexInfo indexInfo = this._indexes.get(fieldName);
+					Plan p = new IndexJoinPlan(current, this._myPlan, indexInfo, outerField, this._tx);
+
+					// select prediction
+					Predicate selectPredicate = _myPredicate.selectPred(this._mySchema);
+					if (selectPredicate != null)
+						p = new SelectPlan(p, selectPredicate);
+
+					// join predicate
+					joinPredicate = _myPredicate.joinPred(currsch, this._mySchema);
+
+					if (joinPredicate != null)
+
+						return new SelectPlan(p, joinPredicate);
+
+					else
+
+						return p;
+
+				}
+			}
+
+
+			// product join
+			Plan p = createProduct(current);
+
+			// join predicate
+			joinPredicate = _myPredicate.joinPred(currsch, this._mySchema);
+			if (joinPredicate != null)
+				return new SelectPlan(p, joinPredicate);
+
+			else
+				return p;
+
+		}
+
 		public Plan createProduct(Plan current) {
 
 			// select prediction
@@ -98,6 +247,5 @@ public class MyQueryPlanner implements QueryPlanner{
 			}
 
 		}
-
 	}
-}
+
