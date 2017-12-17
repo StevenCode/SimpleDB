@@ -3,6 +3,8 @@ package simpledb.planner;
 import simpledb.parse.CreateTableData;
 import simpledb.parse.InsertData;
 import simpledb.parse.Parser;
+import simpledb.parse.QueryData;
+import simpledb.query.Plan;
 import simpledb.tx.Transaction;
 
 /**
@@ -24,6 +26,18 @@ public class Planner {
 	public Planner(QueryPlanner qplanner, UpdatePlanner uplanner) {
 		this.qplanner = qplanner;
 		this.uplanner = uplanner;
+	}
+
+	/**
+	 * Creates a plan for an SQL select statement, using the supplied planner.
+	 * @param qry the SQL query string
+	 * @param tx the transaction
+	 * @return the scan corresponding to the query plan
+	 */
+	public Plan createQueryPlan(String qry, Transaction tx) {
+		Parser parser = new Parser(qry);
+		QueryData data = parser.query();
+		return qplanner.createPlan(data, tx);
 	}
 
 	public int executeUpdate(String cmd, Transaction tx) {

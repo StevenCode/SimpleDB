@@ -146,4 +146,31 @@ public class Transaction {
 		unpin(blk);
 		return blk;
 	}
+
+	/**
+	 * Commits the current transaction.
+	 * Flushes all modified buffers (and their log records),
+	 * writes and flushes a commit record to the log,
+	 * releases all locks, and unpins any pinned buffers.
+	 */
+	public void commit() {
+//		recoveryMgr.commit();
+//		concurMgr.release();
+		myBuffers.unpinAll();
+		System.out.println("transaction " + txnum + " committed");
+	}
+
+	/**
+	 * Rolls back the current transaction.
+	 * Undoes any modified values,
+	 * flushes those buffers,
+	 * writes and flushes a rollback record to the log,
+	 * releases all locks, and unpins any pinned buffers.
+	 */
+	public void rollback() {
+//		recoveryMgr.rollback();
+//		concurMgr.release();
+		myBuffers.unpinAll();
+		System.out.println("transaction " + txnum + " rolled back");
+	}
 }
